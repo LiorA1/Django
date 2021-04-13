@@ -1,0 +1,24 @@
+
+five = Customer.objects.filter(salesorder__isnull=True).distinct().values('id','fname','lname')
+>>> print(five, file=open('five.txt', 'a'))
+
+<QuerySet [
+{'id': 220, 'fname': 'Lewis N.', 'lname': 'Clark'},
+ {'id': 221, 'fname': 'Jack ', 'lname': 'Johnson'}, 
+ {'id': 222, 'fname': 'Jane', 'lname': 'Doe'}, 
+ {'id': 330, 'fname': 'John', 'lname': 'Glenn'}, 
+ {'id': 331, 'fname': 'Dominic', 'lname': 'Johansen'}, 
+ {'id': 332, 'fname': 'Stanley', 'lname': 'Jue'}, 
+ {'id': 333, 'fname': 'Harry', 'lname': 'Jones'}, 
+ {'id': 440, 'fname': 'Marie', 'lname': 'Curie'}, 
+ {'id': 441, 'fname': 'Elizibeth', 'lname': 'Bordon'}, 
+ {'id': 444, 'fname': 'Len', 'lname': 'Manager'}, 
+ {'id': 550, 'fname': 'Tony', 'lname': 'Antolini'}, 
+ {'id': 551, 'fname': 'Tom', 'lname': 'Cruz'}, 
+ {'id': 552, 'fname': 'Janice', 'lname': 'OToole'}, 
+ {'id': 553, 'fname': 'Stevie', 'lname': 'Nickolas'}, 
+ {'id': 555, 'fname': 'Philipe', 'lname': 'Fernandez'}, 
+ {'id': 661, 'fname': 'Jennifer', 'lname': 'Stutzman'}, 
+ {'id': 665, 'fname': 'William', 'lname': 'Thompson'}]>
+ 
+ # the same

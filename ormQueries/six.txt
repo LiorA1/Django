@@ -1,0 +1,38 @@
+
+six = SalesOrder.objects.all() # all the orders
+asst = SalesOrderItems.objects.filter(prod_id__name__contains="shirt").values_list('sale_order_id', flat=True) 
+# returns a list of salesOrders that contains a product "shirt"
+
+six = six.exclude(id__in=list(asst)) # exclude orders that had product "shirt" as at least one item in the order.
+# will contains a list of SalesOrder that didnt contains "shirts"
+
+six = six.values('cust_id').distinct()
+# a DISTINCT list of customer id's that make orders without 'shirt' products
+
+res = Customer.objects.filter(id__in=six.values('cust_id').distinct()).values('id', 'fname', 'lname')
+>>> print(res, file=open('six2.txt', 'a'))
+
+print(six, file=open('six.txt', 'a'))
+
+<QuerySet 
+[<SalesOrder: SalesOrder object (2001)>,
+ <SalesOrder: SalesOrder object (2004)>,
+ <SalesOrder: SalesOrder object (2006)>,
+ <SalesOrder: SalesOrder object (2007)>,
+ <SalesOrder: SalesOrder object (2008)>,
+ <SalesOrder: SalesOrder object (2013)>,
+ <SalesOrder: SalesOrder object (2017)>,
+ <SalesOrder: SalesOrder object (2019)>,
+ <SalesOrder: SalesOrder object (2021)>,
+ <SalesOrder: SalesOrder object (2024)>,
+ <SalesOrder: SalesOrder object (2028)>,
+ <SalesOrder: SalesOrder object (2029)>,
+ <SalesOrder: SalesOrder object (2036)>,
+ <SalesOrder: SalesOrder object (2037)>,
+ <SalesOrder: SalesOrder object (2039)>,
+ <SalesOrder: SalesOrder object (2040)>,
+ <SalesOrder: SalesOrder object (2041)>,
+ <SalesOrder: SalesOrder object (2046)>,
+ <SalesOrder: SalesOrder object (2047)>,
+ <SalesOrder: SalesOrder object (2049)>,
+ '...(remaining elements truncated)...']>

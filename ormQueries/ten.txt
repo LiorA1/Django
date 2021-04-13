@@ -1,0 +1,8 @@
+
+ten = SalesOrder.objects.values('order_date').order_by('-order_date').first()
+print(ten, file=open('ten.txt', 'a'))
+
+
+{'order_date': datetime.date(1994, 7, 23)}
+
+# the same

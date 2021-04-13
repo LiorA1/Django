@@ -1,0 +1,46 @@
+
+elevn = Customer.objects.values('state').annotate(numOfCust = Count('state')).order_by('-numOfCust').first()
+ print(list(elevn), file=open('elevn.txt', 'a'))
+
+# Is the same wthout 'first()' - 'first()' will return only the max
+
+[{'state': 'AB', 'numOfCust': 1},
+ {'state': 'BC', 'numOfCust': 1},
+ {'state': 'CA', 'numOfCust': 10},
+ {'state': 'CO', 'numOfCust': 1},
+ {'state': 'CT', 'numOfCust': 4},
+ {'state': 'DC', 'numOfCust': 2},
+ {'state': 'FL', 'numOfCust': 7},
+ {'state': 'GA', 'numOfCust': 3},
+ {'state': 'IA', 'numOfCust': 1},
+ {'state': 'IL', 'numOfCust': 6},
+ {'state': 'IN', 'numOfCust': 6},
+ {'state': 'KS', 'numOfCust': 3},
+ {'state': 'LA', 'numOfCust': 1},
+ {'state': 'MA', 'numOfCust': 10},
+ {'state': 'MB', 'numOfCust': 4},
+ {'state': 'MD', 'numOfCust': 4},
+ {'state': 'MI', 'numOfCust': 3},
+ {'state': 'MN', 'numOfCust': 5},
+ {'state': 'MO', 'numOfCust': 5},
+ {'state': 'NC', 'numOfCust': 4},
+ {'state': 'ND', 'numOfCust': 1},
+ {'state': 'NJ', 'numOfCust': 2},
+ {'state': 'NM', 'numOfCust': 1},
+ {'state': 'NY', 'numOfCust': 13},
+ {'state': 'OH', 'numOfCust': 7},
+ {'state': 'ON', 'numOfCust': 3},
+ {'state': 'OR', 'numOfCust': 1},
+ {'state': 'PA', 'numOfCust': 1},
+ {'state': 'PQ', 'numOfCust': 1},
+ {'state': 'TN', 'numOfCust': 3},
+ {'state': 'TX', 'numOfCust': 2},
+ {'state': 'UT', 'numOfCust': 1},
+ {'state': 'VA', 'numOfCust': 4},
+ {'state': 'WA', 'numOfCust': 2},
+ {'state': 'WI', 'numOfCust': 2},
+ {'state': 'WY', 'numOfCust': 1}]
+ 
+ 
+print(elevn, file=open('elevn.txt', 'a'))
+{'state': 'NY', 'numOfCust': 13}

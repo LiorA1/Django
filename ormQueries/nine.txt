@@ -1,0 +1,19 @@
+
+from django.db.models import Count
+nine=SalesOrder.objects.all().order_by('sales_rep').values('sales_rep__emp_id','sales_rep__emp_fname').annotate(count = Count('id'))
+print(nine, file=open('nine.txt', 'a'))
+
+<QuerySet 
+[{'sales_rep__emp_id': 129, 'sales_rep__emp_fname': 'Philip', 'count': 57},
+ {'sales_rep__emp_id': 195, 'sales_rep__emp_fname': 'Marc', 'count': 50},
+ {'sales_rep__emp_id': 299, 'sales_rep__emp_fname': 'Rollin', 'count': 115},
+ {'sales_rep__emp_id': 467, 'sales_rep__emp_fname': 'James', 'count': 56},
+ {'sales_rep__emp_id': 667, 'sales_rep__emp_fname': 'Mary', 'count': 53},
+ {'sales_rep__emp_id': 690, 'sales_rep__emp_fname': 'Kathleen', 'count': 52},
+ {'sales_rep__emp_id': 856, 'sales_rep__emp_fname': 'Samuel', 'count': 55},
+ {'sales_rep__emp_id': 902, 'sales_rep__emp_fname': 'Moira', 'count': 47},
+ {'sales_rep__emp_id': 949, 'sales_rep__emp_fname': 'Pamela', 'count': 53},
+ {'sales_rep__emp_id': 1142, 'sales_rep__emp_fname': 'Alison', 'count': 57},
+ {'sales_rep__emp_id': 1596, 'sales_rep__emp_fname': 'Catherine', 'count': 53}]>
+ 
+ # the same

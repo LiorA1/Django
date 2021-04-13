@@ -1,0 +1,20 @@
+
+# one = Customer.objects.filter(id__gt=Customer.objects.filter(state='TX').values('id')).values('fname','lname')
+# using print(one, file=open("one.txt", "a"))
+
+<QuerySet [<Customer: Customer object (333)>, <Customer: Customer object (440)>, <Customer: Customer object (441)>, <Customer: Customer object (444)>, <Customer: Customer object (550)>, <Customer: Customer object (551)>, <Customer: Customer object (552)>, <Customer: Customer object (553)>, <Customer: Customer object (555)>, <Customer: Customer object (661)>, <Customer: Customer object (665)>]>
+<QuerySet [
+{'id': 333, 'fname': 'Harry', 'lname': 'Jones', 'address': '25 Software Rd', 'city': 'San Jose', 'state': 'CA', 'zip_code': '94020', 'phone': '4085556689', 'company_name': 'Bits & Bytes'},
+ {'id': 440, 'fname': 'Marie', 'lname': 'Curie', 'address': '210 Helping Hand Hwy', 'city': 'LeCroix', 'state': 'MA', 'zip_code': '02140', 'phone': '6175558875', 'company_name': 'Wind & Rain'},
+ {'id': 441, 'fname': 'Elizibeth', 'lname': 'Bordon', 'address': '87 Grinding Stone Rd', 'city': 'New Bedford', 'state': 'MA', 'zip_code': '01801', 'phone': '5085558879', 'company_name': 'Blades & things'},
+ {'id': 444, 'fname': 'Len', 'lname': 'Manager', 'address': '23 Network Way', 'city': 'Dallas', 'state': 'TX', 'zip_code': '76552', 'phone': '2145552685', 'company_name': 'Lets get Connected'},
+ 
+ {'id': 550, 'fname': 'Tony', 'lname': 'Antolini', 'address': '6678 Sliver Road', 'city': 'Fargo', 'state': 'ND', 'zip_code': '60500', 'phone': '7015553259', 'company_name': 'Flat Landers'},
+ {'id': 551, 'fname': 'Tom', 'lname': 'Cruz', 'address': '789 Far Away Lane', 'city': 'Eugene', 'state': 'OR', 'zip_code': '98524', 'phone': '5035557462', 'company_name': 'Raceway Engines'},
+ {'id': 552, 'fname': 'Janice', 'lname': 'OToole', 'address': '654 West Hill', 'city': 'Nashville', 'state': 'TN', 'zip_code': '37320', 'phone': '6155553689', 'company_name': 'Greensleeves'},
+ {'id': 553, 'fname': 'Stevie', 'lname': 'Nickolas', 'address': '77 Recordings Circle', 'city': 'Tacoma', 'state': 'WA', 'zip_code': '96521', 'phone': '5095551695', 'company_name': 'Its a Hit!'},
+ {'id': 555, 'fname': 'Philipe', 'lname': 'Fernandez', 'address': '99 Main Street', 'city': 'Los Angeles', 'state': 'CA', 'zip_code': '90205', 'phone': '2135554457', 'company_name': 'Quaker Fashions'},
+ {'id': 661, 'fname': 'Jennifer', 'lname': 'Stutzman', 'address': '3 Back Pages Lane', 'city': 'Missola', 'state': 'IL', 'zip_code': '60505', 'phone': '7085556857', 'company_name': 'Stutzman Advertising'},
+ {'id': 665, 'fname': 'William', 'lname': 'Thompson', 'address': '91 Washington Street', 'city': 'Manchester', 'state': 'NY', 'zip_code': '11700', 'phone': '5165552549', 'company_name': 'The Apple Farm'}]>
+
+# Not the same results

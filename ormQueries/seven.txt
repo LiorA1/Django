@@ -1,0 +1,3 @@
+
+
+<QuerySet [{'id': 141, 'fname': 'Peter', 'lname': 'Pyper'}]>

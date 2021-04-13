@@ -1,0 +1,15 @@
+
+
+EmpToDep.objects.values('departmentKey__dept_id','departmentKey__dept_name').order_by('departmentKey__dept_id').annotate(count = Count('employeeKey__emp_id'), avg = Avg('employeeKey__salary'))
+
+ print(eight, file=open('eight.txt', 'a'))
+ 
+
+<QuerySet 
+[{'departmentKey__dept_id': 100, 'departmentKey__dept_name': 'R & D', 'count': 22, 'avg': 58736.281363636364},
+ {'departmentKey__dept_id': 200, 'departmentKey__dept_name': 'Sales', 'count': 19, 'avg': 48390.94736842105},
+ {'departmentKey__dept_id': 300, 'departmentKey__dept_name': 'Finance', 'count': 9, 'avg': 59500.0},
+ {'departmentKey__dept_id': 400, 'departmentKey__dept_name': 'Marketing', 'count': 17, 'avg': 42826.51470588235},
+ {'departmentKey__dept_id': 500, 'departmentKey__dept_name': 'Shipping', 'count': 8, 'avg': 34246.225}]>
+
+# looks same

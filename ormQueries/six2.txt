@@ -1,0 +1,40 @@
+
+
+six = SalesOrder.objects.all() # all the orders
+asst = SalesOrderItems.objects.filter(prod_id__name__contains="shirt").values_list('sale_order_id', flat=True) 
+# returns a list of salesOrders that contains a product "shirt"
+
+six = six.exclude(id__in=list(asst)) # exclude orders that had product "shirt" as at least one item in the order.
+# will contains a list of SalesOrder that didnt contains "shirts"
+
+six = six.values('cust_id').distinct()
+# a DISTINCT list of customer id's that make orders without 'shirt' products
+
+res = Customer.objects.filter(id__in=six).values('id', 'fname', 'lname')
+# res will hold customers that makes at least one order, but didnt ever order a product 'shirt'
+>>> print(res, file=open('six2.txt', 'a'))
+
+
+
+<QuerySet 
+[{'id': 101, 'fname': 'Michaels', 'lname': 'Devlin'},
+ {'id': 102, 'fname': 'Beth', 'lname': 'Reiser'},
+ {'id': 103, 'fname': 'Erin', 'lname': 'Niedringhaus'},
+ {'id': 104, 'fname': 'Meghan', 'lname': 'Mason'},
+ {'id': 105, 'fname': 'Laura', 'lname': 'McCarthy'},
+ {'id': 106, 'fname': 'Paul', 'lname': 'Phillips'},
+ {'id': 107, 'fname': 'Kelly', 'lname': 'Colburn'},
+ {'id': 108, 'fname': 'Matthew', 'lname': 'Goforth'},
+ {'id': 109, 'fname': 'Jessie', 'lname': 'Gagliardo'},
+ {'id': 110, 'fname': 'Michael', 'lname': 'Agliori'},
+ {'id': 111, 'fname': 'Dylan', 'lname': 'Ricci'},
+ {'id': 112, 'fname': 'Shawn', 'lname': 'McDonough'},
+ {'id': 113, 'fname': 'Samuel', 'lname': 'Kaiser'},
+ {'id': 114, 'fname': 'Shane', 'lname': 'Chopp'},
+ {'id': 115, 'fname': 'Shannon', 'lname': 'Phillips'},
+ {'id': 116, 'fname': 'Brian', 'lname': 'Gugliuzza'},
+ {'id': 117, 'fname': 'Meredith', 'lname': 'Morgan'},
+ {'id': 118, 'fname': 'Kristina', 'lname': 'Sanford'},
+ {'id': 119, 'fname': 'Tomm', 'lname': 'Smith'},
+ {'id': 120, 'fname': 'Gertrude', 'lname': 'Stein'},
+ '...(remaining elements truncated)...']>

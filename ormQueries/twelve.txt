@@ -1,0 +1,54 @@
+
+
+# listOfCust = SalesOrder.objects.filter(sales_rep=129).values_list('cust_id', flat=True).distinct()
+
+#  twelve = Customer.objects.filter(id__in=listOfCust).values('id', 'fname', 'lname').annotate(Count('salesorder__id'))
+ print(list(twelve), file=open('twelve.txt', 'a'))
+ 
+
+
+[{'id': 101, 'fname': 'Michaels', 'lname': 'Devlin', 'salesorder__id__count': 11}, 
+{'id': 103, 'fname': 'Erin', 'lname': 'Niedringhaus', 'salesorder__id__count': 8}, 
+{'id': 104, 'fname': 'Meghan', 'lname': 'Mason', 'salesorder__id__count': 11}, 
+{'id': 107, 'fname': 'Kelly', 'lname': 'Colburn', 'salesorder__id__count': 11}, 
+{'id': 110, 'fname': 'Michael', 'lname': 'Agliori', 'salesorder__id__count': 10}, 
+{'id': 111, 'fname': 'Dylan', 'lname': 'Ricci', 'salesorder__id__count': 8}, 
+{'id': 116, 'fname': 'Brian', 'lname': 'Gugliuzza', 'salesorder__id__count': 7}, 
+{'id': 117, 'fname': 'Meredith', 'lname': 'Morgan', 'salesorder__id__count': 8}, 
+{'id': 119, 'fname': 'Tomm', 'lname': 'Smith', 'salesorder__id__count': 6}, 
+{'id': 121, 'fname': 'Pete', 'lname': 'Elkins', 'salesorder__id__count': 8}, 
+{'id': 122, 'fname': 'Al', 'lname': 'Dente', 'salesorder__id__count': 6}, 
+{'id': 126, 'fname': 'Sam', 'lname': 'Ovar', 'salesorder__id__count': 5}, 
+{'id': 127, 'fname': 'Mary', 'lname': 'Lamm', 'salesorder__id__count': 6}, 
+{'id': 128, 'fname': 'Hardy', 'lname': 'Mums', 'salesorder__id__count': 6}, 
+{'id': 131, 'fname': 'Daljit', 'lname': 'Sinnot', 'salesorder__id__count': 5}, 
+{'id': 132, 'fname': 'Marilyn', 'lname': 'King', 'salesorder__id__count': 7}, 
+{'id': 136, 'fname': 'Tommie', 'lname': 'Wooten', 'salesorder__id__count': 8}, 
+{'id': 137, 'fname': 'Polly', 'lname': 'Morfek', 'salesorder__id__count': 6}, 
+{'id': 138, 'fname': 'Regus', 'lname': 'Patoff', 'salesorder__id__count': 6}, 
+{'id': 143, 'fname': 'Peter', 'lname': 'Piper', 'salesorder__id__count': 6}, 
+{'id': 144, 'fname': 'Fangmei', 'lname': 'Wan', 'salesorder__id__count': 7}, 
+{'id': 149, 'fname': 'Hans', 'lname': 'Uhnfitte', 'salesorder__id__count': 6}, 
+{'id': 155, 'fname': 'Milo', 'lname': 'Phipps', 'salesorder__id__count': 4}, 
+{'id': 157, 'fname': 'William', 'lname': 'Watcom', 'salesorder__id__count': 6}, 
+{'id': 162, 'fname': 'Melba', 'lname': 'Toste', 'salesorder__id__count': 3}, 
+{'id': 167, 'fname': 'Nicklas', 'lname': 'Cara', 'salesorder__id__count': 4}, 
+{'id': 168, 'fname': 'Almen', 'lname': 'de Joie', 'salesorder__id__count': 6}, 
+{'id': 170, 'fname': 'Manh', 'lname': 'Neubauer', 'salesorder__id__count': 5}, 
+{'id': 173, 'fname': 'Grover', 'lname': 'Pendelton', 'salesorder__id__count': 3}, 
+{'id': 178, 'fname': 'Suresh', 'lname': 'Naidu', 'salesorder__id__count': 4}, 
+{'id': 179, 'fname': 'Marsha', 'lname': 'Nguyen', 'salesorder__id__count': 4}, 
+{'id': 180, 'fname': 'Edith', 'lname': 'Peros', 'salesorder__id__count': 4}, 
+{'id': 182, 'fname': 'Leilani', 'lname': 'Gardner', 'salesorder__id__count': 7}, 
+{'id': 184, 'fname': 'Anoush', 'lname': 'Serafina', 'salesorder__id__count': 4}, 
+{'id': 189, 'fname': 'Herbert', 'lname': 'Berejiklian', 'salesorder__id__count': 8}, 
+{'id': 190, 'fname': 'Randy', 'lname': 'Arlington', 'salesorder__id__count': 7}, 
+{'id': 191, 'fname': 'Marta', 'lname': 'Richards', 'salesorder__id__count': 6}, 
+{'id': 194, 'fname': 'Jen-Chang', 'lname': 'Chin', 'salesorder__id__count': 5}, 
+{'id': 197, 'fname': 'Maio', 'lname': 'Chermak', 'salesorder__id__count': 6}, 
+{'id': 198, 'fname': 'Sheng', 'lname': 'Chen', 'salesorder__id__count': 9}, 
+{'id': 199, 'fname': 'Ella', 'lname': 'Mentary', 'salesorder__id__count': 9}, 
+{'id': 201, 'fname': 'Amit', 'lname': 'Singh', 'salesorder__id__count': 11}, 
+{'id': 202, 'fname': 'Bubba', 'lname': 'Murphy', 'salesorder__id__count': 8}, 
+{'id': 204, 'fname': 'Robert', 'lname': 'Spaid', 'salesorder__id__count': 11}, 
+{'id': 205, 'fname': 'Elmo', 'lname': 'Smythe', 'salesorder__id__count': 8}]

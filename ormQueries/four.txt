@@ -1,0 +1,18 @@
+
+four = Product.objects.filter(salesorderitems__sale_order_id__cust_id__fname__startswith='L').distinct().values('name','description')
+ four.order_by('name')
+ print(four, file=open('four.txt', 'a'))
+
+<QuerySet [
+{'name': 'Tee Shirt', 'description': 'Tank Top'}, 
+{'name': 'Tee Shirt', 'description': 'Crew Neck'}, 
+{'name': 'Visor', 'description': 'Cloth Visor'}, 
+{'name': 'Sweatshirt', 'description': 'Hooded Sweatshirt'}, 
+{'name': 'Sweatshirt', 'description': 'Zipped Sweatshirt'}, 
+{'name': 'Tee Shirt', 'description': 'V-neck'}, 
+{'name': 'Shorts', 'description': 'Cotton Shorts'}, 
+{'name': 'Visor', 'description': 'Plastic Visor'}, 
+{'name': 'Baseball Cap', 'description': 'Cotton Cap'}, 
+{'name': 'Baseball Cap', 'description': 'Wool cap'}]>
+
+# need to remove distinct

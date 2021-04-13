@@ -1,0 +1,12 @@
+
+three = Customer.objects.filter(salesorder__order_date__year=1994).exclude(salesorder__order_date__year__gt=1994).exclude(salesorder__order_date__year__lt=1994)
+
+>>> print(three, file=open('three.txt', 'a'))
+
+<QuerySet [
+<Customer: Customer object (186)>,
+ <Customer: Customer object (186)>,
+ <Customer: Customer object (186)>]>
+ 
+ # Need to add '.distinct()' !
+ three = Customer.objects.filter(salesorder__order_date__year=1994).exclude(salesorder__order_date__year__gt=1994).exclude(salesorder__order_date__year__lt=1994).distinct()
