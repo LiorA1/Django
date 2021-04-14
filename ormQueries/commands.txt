@@ -1,0 +1,30 @@
+part 1-
+docker build --tag python-django-docker-100 .
+docker run --publish 8000:8000 python-django-docker-100
+
+part 2 -
+docker-compose build
+docker-compose run --rm app django-admin startproject core .
+docker-compose up
+
+part 3 -
+docker-compose build
+docker-compose run --rm app django-admin startproject core .
+docker-compose up
+docker exec -it django_app /bin/bash
+
+
+Additional -
+https://docs.docker.com/compose/reference/pull/
+
+https://hub.docker.com/_/postgres
+
+
+part 4 -
+docker-compose run django_app sh -c "django-admin startapp app ."
+docker exec -it django_app ash
+
+Run Celery Task
+    python manage.py shell
+    from newapp.tasks import add
+    task = add.delay(2, 2)

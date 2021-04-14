@@ -38,7 +38,7 @@ class Customer(models.Model):
     address = models.CharField(max_length=35)
     city = models.CharField(max_length=20)
     state = models.CharField(max_length=2)
-    zip_code = models.CharField(max_length=5)
+    zip_code = models.CharField(max_length=10)
     phone = models.CharField(max_length=12)
     company_name = models.CharField(max_length=35)
 
