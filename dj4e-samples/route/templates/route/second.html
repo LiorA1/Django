@@ -1,0 +1,34 @@
+<h1>Reverse URLs</h2>
+<ul>
+    <li>
+        <a href="{% url 'route:first-view' %}">
+        route:first-view</a>
+    </li>
+
+    <li>
+        {{ x1 }} is (x1 from context)
+    </li>
+
+    <li>
+        {{ x2 }} is (x2 from context)
+    </li>
+
+    <li>
+        {{ x3 }} is (x3 from context)
+    </li>
+
+    <li>
+         request.GET is: {{ request.GET }}
+    </li>
+
+    <li>
+        request.PUT is: {{ request.PUT }}
+    </li>
+
+    <li>
+        request.POST is: {{ request.POST }}
+    </li>
+</ul>
+<p>
+    <a href="https://docs.djangoproject.com/en/3.0/ref/templates/builtins/#url" target="_blank">Documentation</a>
+</p>

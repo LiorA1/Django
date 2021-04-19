@@ -1,0 +1,61 @@
+{% extends 'base_bootstrap.html' %}
+
+{% block content %}
+
+    <h1>Chat</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" name="message" size="60"/>
+        <br>
+        <input type="submit" value="Chat"/> 
+        <input type="submit" name="reset" value="Reset"/> 
+        <a href="{% url 'chat:main' %}" target="_blank">Cancel</a>
+        <!-- </p> -->
+    </form>
+    <br>
+
+    <div id="chatcontent">
+        <img src="{% url 'chat:static' 'spinner.gif' %}" alt="Loading..."/>
+    </div>
+
+    <script type="text/javascript">
+        function updateMsg() 
+        {
+            //console.log('Requesting JSON'); 
+
+            // Description: Load JSON-encoded data from the server using a GET HTTP request.
+
+            $.getJSON('{% url "chat:messages" %}', 
+            function(dict)
+                {
+                    // dict is what returning to us from the TalkMessages View.
+                    console.log('JSON', dict);
+                    console.log('JSON comments', dict.comments);
+                    var comments = dict.comments;
+
+                    $('#chatcontent').empty(); // Cleans the content
+                    
+
+                    for(var i = 0; i < comments.length; i++) 
+                    {
+                        arow = comments[i];
+                        console.log('JSON arow', arow);
+                        $('#chatcontent').append('<p>'+ arow.text + '<br/>&nbsp;&nbsp;<strong>'+ arow.time +", Author:"+ arow.auth +"</strong></p>\n");
+                        //$('#chatcontent').append('<p>'+ arow[0] + '<br/>&nbsp;&nbsp;<strong>'+ arow[1] +", Author:"+ arow[2] +"</strong></p>\n");
+                    }
+                    
+                    setTimeout('updateMsg()', 10000); // after 10 seconds - call updateMsg()
+                });
+        }
+
+
+        // Make sure JSON requests are not cached & first call
+        $(document).ready(
+            function()
+            {
+                $.ajaxSetup({ cache: false }); // false
+                setTimeout('updateMsg()', 2000);// 2 seconds
+            });
+    </script>
+
+{% endblock %}
