@@ -42,10 +42,6 @@ class OwnerCreateView(LoginRequiredMixin, CreateView):
         print('form_valid called (my version)')
         
         form.instance.owner = self.request.user
-        #print("form_valid: ", form) # html representation
-        #print("form_valid: ", dir(form))
-        print("form_valid: ", form.__dict__)
-        #print("form_valid: ", type(form))
         
         return super(OwnerCreateView, self).form_valid(form)
 
