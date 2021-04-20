@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="dj4e" content="13403518ef9c1ce843a289d991f79bf5">
+    <meta name="dj4e-code" content="42160553910762">
+    <title>Autos List</title>
+</head>
+
+
+
+<body>
+    <h1>Auto List</h1>
+
+    {% if auto_list %}
+        <ul>
+        {% for auto in auto_list %}
+            <li> {{ auto.nickname }} ( {{ auto.make }} )
+            (<a href="{% url 'autos:auto_update' auto.id %}">Update</a> | <a href="{% url 'autos:auto_delete' auto.id %}">Delete</a>)
+            </li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+
+    <br>
+
+    <p>
+        {{ context }}
+    </p>
+
+    <strong> Auto Operations </strong>
+    <p>
+        <!--<a href="/create">Add Auto</a>
+        <a href="/auto_create">Add Auto</a> -->
+        <a href="{% url 'autos:auto_create' %}">Add an auto</a>
+
+    </p>
+
+    <p>
+        <strong>Makes</strong><br>
+        <a href="{% url 'autos:make_list' %}">View makes</a><br>
+        <a href="{% url 'autos:make_create' %}">Add a make</a>
+    </p>
+
+
+
+</body>
+
+</html>
