@@ -5,7 +5,7 @@ services:
         volumes: 
             - ./data/db:/var/lib/postgresql/data
         environment: 
-            - POSTGRES_DB=postgres
+            - POSTGRES_DB=postgres_of_ormqueries_redis_celery
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=postgres
         container_name: postgres_db
@@ -16,8 +16,8 @@ services:
             - .:/django
         ports: 
             - 8000:8000
-        image: app:django
-        container_name: django_container_alpine
+        image: django_pos_res_cel:django
+        container_name: django_container_alpine_ormqueries_redis_celery
         command: python manage.py runserver 0.0.0.0:8000
         depends_on: 
             - db

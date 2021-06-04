@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'ormQueries.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
+        'NAME': 'postgres_of_ormqueries_redis_celery',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'db',
