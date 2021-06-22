@@ -1,6 +1,9 @@
 # vscode
 .vscode/
 
+#postgres db
+/data/
+
 #Docker
 docker-compose.yml
 Dockerfile
