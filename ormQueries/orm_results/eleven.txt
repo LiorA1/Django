@@ -1,0 +1,47 @@
+
+a=Customer.objects.values('state').annotate(num_of_cust=Count('state'))
+
+SELECT "customer"."state", COUNT("customer"."state") AS "num_of_cust" 
+FROM "customer" 
+GROUP BY "customer"."state"
+
+
+print(list(a), file=open('eleven.txt', 'a'))
+
+[
+    {'state': 'CA', 'num_of_cust': 10}, 
+    {'state': 'PQ', 'num_of_cust': 1}, 
+    {'state': 'OR', 'num_of_cust': 1}, 
+    {'state': 'AB', 'num_of_cust': 1}, 
+    {'state': 'ND', 'num_of_cust': 1}, 
+    {'state': 'TX', 'num_of_cust': 2}, 
+    {'state': 'OH', 'num_of_cust': 7}, 
+    {'state': 'MB', 'num_of_cust': 4}, 
+    {'state': 'NY', 'num_of_cust': 13}, 
+    {'state': 'NM', 'num_of_cust': 1}, 
+    {'state': 'IN', 'num_of_cust': 6}, 
+    {'state': 'BC', 'num_of_cust': 1}, 
+    {'state': 'DC', 'num_of_cust': 2}, 
+    {'state': 'FL', 'num_of_cust': 7}, 
+    {'state': 'MO', 'num_of_cust': 5}, 
+    {'state': 'WI', 'num_of_cust': 2}, 
+    {'state': 'NC', 'num_of_cust': 4}, 
+    {'state': 'CT', 'num_of_cust': 4}, 
+    {'state': 'GA', 'num_of_cust': 3}, 
+    {'state': 'MN', 'num_of_cust': 5}, 
+    {'state': 'PA', 'num_of_cust': 1}, 
+    {'state': 'MD', 'num_of_cust': 4}, 
+    {'state': 'LA', 'num_of_cust': 1}, 
+    {'state': 'WY', 'num_of_cust': 1}, 
+    {'state': 'IL', 'num_of_cust': 6}, 
+    {'state': 'TN', 'num_of_cust': 3}, 
+    {'state': 'MI', 'num_of_cust': 3}, 
+    {'state': 'WA', 'num_of_cust': 2}, 
+    {'state': 'NJ', 'num_of_cust': 2}, 
+    {'state': 'MA', 'num_of_cust': 10}, 
+    {'state': 'IA', 'num_of_cust': 1}, 
+    {'state': 'UT', 'num_of_cust': 1}, 
+    {'state': 'ON', 'num_of_cust': 3}, 
+    {'state': 'CO', 'num_of_cust': 1}, 
+    {'state': 'VA', 'num_of_cust': 4}, 
+    {'state': 'KS', 'num_of_cust': 3}]

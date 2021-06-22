@@ -6,6 +6,7 @@ from .models import SalesOrder
 
 from django.db.models import F
 from datetime import timedelta
+#from dateutil.relativedelta import *
 
 
 @shared_task
@@ -15,6 +16,7 @@ def increase_days_by(num_of_days: int):
 
 @shared_task
 def increase_months_by(num_of_months: int):
+    #return SalesOrder.objects.all().update(order_date=F('order_date')+relativedelta(months=num_of_months))
     return SalesOrder.objects.all().update(order_date=F('order_date')+timedelta(months=num_of_months))
 
 

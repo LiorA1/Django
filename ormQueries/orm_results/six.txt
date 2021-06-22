@@ -1,38 +1,33 @@
 
-six = SalesOrder.objects.all() # all the orders
-asst = SalesOrderItems.objects.filter(prod_id__name__contains="shirt").values_list('sale_order_id', flat=True) 
-# returns a list of salesOrders that contains a product "shirt"
+a=Customer.objects.filter(salesorder__salesorderitems__prod_id__name__icontains='shirt').values_list('id',flat=True)
 
-six = six.exclude(id__in=list(asst)) # exclude orders that had product "shirt" as at least one item in the order.
-# will contains a list of SalesOrder that didnt contains "shirts"
+SELECT "customer"."id" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+                INNER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+                INNER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+WHERE UPPER("product"."name"::text) LIKE UPPER(%shirt%)
 
-six = six.values('cust_id').distinct()
-# a DISTINCT list of customer id's that make orders without 'shirt' products
 
-res = Customer.objects.filter(id__in=six.values('cust_id').distinct()).values('id', 'fname', 'lname')
->>> print(res, file=open('six2.txt', 'a'))
+b=Customer.objects.filter(salesorder__isnull=False).values_list('id',flat=True)
 
-print(six, file=open('six.txt', 'a'))
+SELECT "customer"."id" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE "sales_order"."id" IS NOT NULL
+
+
+c=Customer.objects.filter(id__in=list(b)).exclude(id__in=list(a)).values('id','fname','lname')
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname" 
+FROM "customer" 
+WHERE ("customer"."id" IN (101, 102, 141, 142, 205, 133) 
+    AND NOT ("customer"."id" IN (101, 105, 181, 179, 162)))
+
+print(c, file=open('six.txt','a'))
 
 <QuerySet 
-[<SalesOrder: SalesOrder object (2001)>,
- <SalesOrder: SalesOrder object (2004)>,
- <SalesOrder: SalesOrder object (2006)>,
- <SalesOrder: SalesOrder object (2007)>,
- <SalesOrder: SalesOrder object (2008)>,
- <SalesOrder: SalesOrder object (2013)>,
- <SalesOrder: SalesOrder object (2017)>,
- <SalesOrder: SalesOrder object (2019)>,
- <SalesOrder: SalesOrder object (2021)>,
- <SalesOrder: SalesOrder object (2024)>,
- <SalesOrder: SalesOrder object (2028)>,
- <SalesOrder: SalesOrder object (2029)>,
- <SalesOrder: SalesOrder object (2036)>,
- <SalesOrder: SalesOrder object (2037)>,
- <SalesOrder: SalesOrder object (2039)>,
- <SalesOrder: SalesOrder object (2040)>,
- <SalesOrder: SalesOrder object (2041)>,
- <SalesOrder: SalesOrder object (2046)>,
- <SalesOrder: SalesOrder object (2047)>,
- <SalesOrder: SalesOrder object (2049)>,
- '...(remaining elements truncated)...']>
+[
+    {'id': 141, 'fname': 'Peter', 'lname': 'Pyper'}, 
+    {'id': 152, 'fname': 'Davey', 'lname': 'Jones'}, 
+    {'id': 154, 'fname': 'Marvin', 'lname': 'Smythe'}, 
+    {'id': 160, 'fname': 'Clara', 'lname': 'Nette'}, 
+    {'id': 194, 'fname': 'Jen-Chang', 'lname': 'Chin'}]>

@@ -1,0 +1,27 @@
+
+from djamgo.db.models import Count
+a=Department.objects.all().annotate(num_of_emp=Count('emptodep__employeeKey')).values('dept_name','num_of_emp')
+print(a, file=open('eight.txt','a'))
+
+
+<QuerySet [
+    {'dept_name': 'R & D', 'num_of_emp': 22}, 
+    {'dept_name': 'Sales', 'num_of_emp': 19}, 
+    {'dept_name': 'Finance', 'num_of_emp': 9}, 
+    {'dept_name': 'Marketing', 'num_of_emp': 17}, 
+    {'dept_name': 'Shipping', 'num_of_emp': 8}]>
+
+a1=Department.objects.annotate(avg_salary=Avg('emptodep__employeeKey__salary')).annotate(num_of_emp=Count('emptodep__employeeKey')).values('dept_name','avg_salary','num_of_emp')
+
+SELECT "department"."dept_name", AVG("employee"."salary") AS "avg_salary", COUNT("store_emptodep"."employeeKey_id") AS "num_of_emp" 
+FROM "department" LEFT OUTER JOIN "store_emptodep" ON ("department"."dept_id" = "store_emptodep"."departmentKey_id") 
+                    LEFT OUTER JOIN "employee" ON ("store_emptodep"."employeeKey_id" = "employee"."emp_id") 
+GROUP BY "department"."dept_id"
+
+
+<QuerySet [
+    {'dept_name': 'R & D', 'avg_salary': 58736.281363636364, 'num_of_emp': 22}, 
+    {'dept_name': 'Sales', 'avg_salary': 48390.94736842105, 'num_of_emp': 19}, 
+    {'dept_name': 'Finance', 'avg_salary': 59500.0, 'num_of_emp': 9}, 
+    {'dept_name': 'Marketing', 'avg_salary': 42826.51470588235, 'num_of_emp': 17}, 
+    {'dept_name': 'Shipping', 'avg_salary': 34246.225, 'num_of_emp': 8}]>

@@ -10,3 +10,11 @@ three = Customer.objects.filter(salesorder__order_date__year=1994).exclude(sales
  
  # Need to add '.distinct()' !
  three = Customer.objects.filter(salesorder__order_date__year=1994).exclude(salesorder__order_date__year__gt=1994).exclude(salesorder__order_date__year__lt=1994).distinct()
+
+
+
+SELECT DISTINCT "customer"."id", "customer"."fname", "customer"."lname", "customer"."address", "customer"."city", "customer"."state", "customer"."zip_code", "customer"."phone", "customer"."company_name" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE ("sales_order"."order_date" BETWEEN 1994-01-01 AND 1994-12-31 
+        AND NOT ("customer"."id" IN (SELECT U1."cust_id_id" FROM "sales_order" U1 WHERE U1."order_date" > 1994-12-31)) 
+        AND NOT ("customer"."id" IN (SELECT U1."cust_id_id" FROM "sales_order" U1 WHERE U1."order_date" < 1994-01-01)))

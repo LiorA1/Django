@@ -2,7 +2,14 @@
 
 EmpToDep.objects.values('departmentKey__dept_id','departmentKey__dept_name').order_by('departmentKey__dept_id').annotate(count = Count('employeeKey__emp_id'), avg = Avg('employeeKey__salary'))
 
- print(eight, file=open('eight.txt', 'a'))
+SELECT "store_emptodep"."departmentKey_id", "department"."dept_name", COUNT("store_emptodep"."employeeKey_id") AS "count", AVG("employee"."salary") AS "avg" 
+FROM "store_emptodep" INNER JOIN "department" ON ("store_emptodep"."departmentKey_id" = "department"."dept_id") 
+                        INNER JOIN "employee" ON ("store_emptodep"."employeeKey_id" = "employee"."emp_id") 
+GROUP BY "store_emptodep"."departmentKey_id", "department"."dept_name" 
+ORDER BY "store_emptodep"."departmentKey_id" ASC
+
+
+print(eight, file=open('eight.txt', 'a'))
  
 
 <QuerySet 

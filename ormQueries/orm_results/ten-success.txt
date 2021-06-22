@@ -6,3 +6,6 @@ print(ten, file=open('ten.txt', 'a'))
 {'order_date': datetime.date(1994, 7, 23)}
 
 # the same
+
+You can also:
+ten = SalesOrder.objects.latest('order_date').order_date

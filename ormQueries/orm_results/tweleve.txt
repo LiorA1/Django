@@ -1,0 +1,20 @@
+
+
+
+
+a= Customer.objects.filter(salesorder__sales_rep=129).values_list('id',flat=True).distinct()
+
+SELECT DISTINCT "customer"."id" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE "sales_order"."sales_rep_id" = 129
+
+
+b=Customer.objects.filter(id__in=list(a)).annotate(num_of_orders=Count('salesorder')).values('id','fname','lname','num_of_orders')
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", COUNT("sales_order"."id") AS "num_of_orders" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE "customer"."id" IN (182, 197, 155, 204, 104, 111, 127, 110, 178, 199, 128, 126, 143, 194, 173, 
+149, 103, 184, 116, 189, 179, 121, 117, 138, 119, 205, 190, 157, 201, 162, 202, 132, 136, 107, 144, 137, 170, 168, 191, 101, 122, 180, 167, 131, 198) 
+GROUP BY "customer"."id"
+
+

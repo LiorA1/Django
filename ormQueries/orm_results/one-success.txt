@@ -1,4 +1,5 @@
 
+# from django.db.models import Max
 # max_id_tx = Customer.objects.filter(state='TX').values('id').aggregate(Max('id'))['id__max']
 # one = Customer.objects.filter(id__gt=max_id_tx).values('fname','lname')
 # using print(one, file=open("one.txt", "a"))

@@ -1,0 +1,21 @@
+
+a=SalesOrder.objects.filter(sales_rep=299).values('cust_id').distinct()
+
+b=SalesOrder.objects.exclude(sales_rep=299).values('cust_id').distinct()
+
+d=a.difference(b)
+
+print(d, file=open('sevenC.txt','a'))
+
+<QuerySet [{'cust_id': 141}]>
+
+
+
+
+(SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order" 
+WHERE "sales_order"."sales_rep_id" = 299) 
+EXCEPT 
+(SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order" 
+WHERE NOT ("sales_order"."sales_rep_id" = 299))

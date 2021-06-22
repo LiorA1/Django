@@ -1,0 +1,49 @@
+
+
+## Find the total of each order
+
+t=SalesOrder.objects.annotate(total=
+            Sum(
+                F('salesorderitems__quantity')*F('salesorderitems__prod_id__unit_price'),
+                 output_field=FloatField()))
+
+t=t.values('id', 'cust_id','order_date', 'total')
+
+print(t, file=open('ques13.txt', 'a'))
+print(t.query, file=open('ques13.txt', 'a'))
+
+
+<QuerySet [
+    {'id': 2001, 'cust_id': 101, 'order_date': datetime.date(1993, 3, 16), 'total': 444.0}, 
+    {'id': 2002, 'cust_id': 102, 'order_date': datetime.date(1993, 3, 20), 'total': 456.0}, 
+    {'id': 2003, 'cust_id': 103, 'order_date': datetime.date(1993, 3, 23), 'total': 168.0}, 
+    {'id': 2004, 'cust_id': 104, 'order_date': datetime.date(1993, 3, 25), 'total': 2304.0}, 
+    {'id': 2005, 'cust_id': 101, 'order_date': datetime.date(1994, 3, 26), 'total': 180.0}, 
+    {'id': 2006, 'cust_id': 105, 'order_date': datetime.date(1994, 3, 30), 'total': 432.0}, 
+    {'id': 2007, 'cust_id': 106, 'order_date': datetime.date(1994, 3, 30), 'total': 336.0}, 
+    {'id': 2008, 'cust_id': 107, 'order_date': datetime.date(1994, 4, 2), 'total': 168.0}, 
+    {'id': 2009, 'cust_id': 108, 'order_date': datetime.date(1994, 4, 5), 'total': 108.0}, 
+    {'id': 2010, 'cust_id': 109, 'order_date': datetime.date(1994, 4, 6), 'total': 120.0}, 
+    {'id': 2011, 'cust_id': 110, 'order_date': datetime.date(1994, 4, 7), 'total': 252.0}, 
+    {'id': 2012, 'cust_id': 111, 'order_date': datetime.date(1994, 4, 7), 'total': 84.0}, 
+    {'id': 2013, 'cust_id': 112, 'order_date': datetime.date(1994, 4, 7), 'total': 1152.0}, 
+    {'id': 2014, 'cust_id': 113, 'order_date': datetime.date(1994, 4, 8), 'total': 540.0}, 
+    {'id': 2015, 'cust_id': 114, 'order_date': datetime.date(1994, 4, 1), 'total': 1248.0}, {'id': 2016, 'cust_id': 115, 'order_date': datetime.date(1993, 4, 2), 'total': 396.0}, {'id': 2017, 'cust_id': 116, 'order_date': datetime.date(1994, 4, 2), 'total': 2976.0}, {'id': 2018, 'cust_id': 117, 'order_date': datetime.date(1994, 3, 9), 'total': 900.0}, {'id': 2019, 'cust_id': 118, 'order_date': datetime.date(1993, 2, 12), 'total': 108.0}, {'id': 2020, 'cust_id': 119, 'order_date': datetime.date(1994, 3, 4), 'total': 360.0}, '...(remaining elements truncated)...']>
+
+
+
+SELECT "sales_order"."id", "sales_order"."cust_id_id", "sales_order"."order_date", SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total" 
+FROM "sales_order" LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+                LEFT OUTER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+GROUP BY "sales_order"."id"
+
+
+## The same query with order_by 'cust_id'
+t=SalesOrder.objects.annotate(total=Sum(F('salesorderitems__quantity')*F('salesorderitems__prod_id__unit_price'), output_field=FloatField())).values('id','cust_id','order_date','total').order_by('cust_id')
+<QuerySet [
+    {'id': 2583, 'cust_id': 101, 'order_date': datetime.date(1994, 4, 5), 'total': 1152.0}, 
+    {'id': 2206, 'cust_id': 101, 'order_date': datetime.date(1993, 4, 16), 'total': 624.0}, 
+    {'id': 2447, 'cust_id': 101, 'order_date': datetime.date(1993, 12, 11), 'total': 252.0}, 
+    {'id': 2337, 'cust_id': 101, 'order_date': datetime.date(1993, 9, 23), 'total': 444.0}, 
+    {'id': 2560, 'cust_id': 101, 'order_date': datetime.date(1994, 3, 16), 'total': 552.0}, 
+    {'id': 2005, 'cust_id': 101, 'order_date': datetime.date(1994, 3, 26), 'total': 180.0}, {'id': 2125, 'cust_id': 101, 'order_date': datetime.date(1994, 6, 24), 'total': 936.0}, {'id': 2279, 'cust_id': 101, 'order_date': datetime.date(1993, 7, 23), 'total': 108.0}, {'id': 2295, 'cust_id': 101, 'order_date': datetime.date(1993, 8, 12), 'total': 252.0}, {'id': 2001, 'cust_id': 101, 'order_date': datetime.date(1993, 3, 16), 'total': 444.0}, {'id': 2389, 'cust_id': 101, 'order_date': datetime.date(1993, 10, 16), 'total': 864.0}, {'id': 2585, 'cust_id': 102, 'order_date': datetime.date(1994, 4, 8), 'total': 276.0}, {'id': 2338, 'cust_id': 102, 'order_date': datetime.date(1993, 9, 24), 'total': 168.0}, {'id': 2562, 'cust_id': 102, 'order_date': datetime.date(1994, 3, 17), 'total': 996.0}, {'id': 2142, 'cust_id': 102, 'order_date': datetime.date(1993, 1, 22), 'total': 336.0}, {'id': 2449, 'cust_id': 102, 'order_date': datetime.date(1993, 12, 14), 'total': 1116.0}, {'id': 2318, 'cust_id': 102, 'order_date': datetime.date(1993, 9, 4), 'total': 276.0}, {'id': 2002, 'cust_id': 102, 'order_date': datetime.date(1993, 3, 20), 'total': 456.0}, {'id': 2003, 'cust_id': 103, 'order_date': datetime.date(1993, 3, 23), 'total': 168.0}, {'id': 2564, 'cust_id': 103, 'order_date': datetime.date(1994, 3, 18), 'total': 336.0}, '...(remaining elements truncated)...']>

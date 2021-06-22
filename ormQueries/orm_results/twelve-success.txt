@@ -1,10 +1,19 @@
 
-
+# Get a list of Customers, which employee 129 serve.
 # listOfCust = SalesOrder.objects.filter(sales_rep=129).values_list('cust_id', flat=True).distinct()
+ 
+#For any customer from the former subquery - find how many orders he did.
 
 #  twelve = Customer.objects.filter(id__in=listOfCust).values('id', 'fname', 'lname').annotate(Count('salesorder__id'))
  print(list(twelve), file=open('twelve.txt', 'a'))
- 
+
+SELECT DISTINCT "customer"."id", "customer"."fname", "customer"."lname", COUNT("sales_order"."id") AS "salesorder__id__count" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE "customer"."id" IN (SELECT DISTINCT U0."cust_id_id" 
+                            FROM "sales_order" U0 
+                            WHERE U0."sales_rep_id" = 129) 
+GROUP BY "customer"."id"
+
 
 
 [{'id': 101, 'fname': 'Michaels', 'lname': 'Devlin', 'salesorder__id__count': 11}, 

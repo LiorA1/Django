@@ -15,4 +15,4 @@ four = Product.objects.filter(salesorderitems__sale_order_id__cust_id__fname__st
 {'name': 'Baseball Cap', 'description': 'Cotton Cap'}, 
 {'name': 'Baseball Cap', 'description': 'Wool cap'}]>
 
-# need to remove distinct
+#! need to remove distinct

@@ -1,0 +1,42 @@
+
+
+a=SalesOrderItems.objects.filter(prod_id__name__icontains='shirt').values_list('sale_order_id',flat=True).distinct()
+
+SELECT DISTINCT "sales_order_items"."sale_order_id_id" 
+FROM "sales_order_items" INNER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+WHERE UPPER("product"."name"::text) LIKE UPPER(%shirt%)
+
+
+b=SalesOrder.objects.filter(id__in=list(a)).values_list('cust_id__id', flat=True).distinct()
+
+SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order" 
+WHERE "sales_order"."id" IN (2001, 2004, 2006, 2007, 2008, 2648, 2650)
+
+
+c=SalesOrder.objects.all().values_list('cust_id',flat=True).distinct()
+
+SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order"
+
+
+d=c.difference(b)
+
+(SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order") 
+EXCEPT 
+(SELECT DISTINCT "sales_order"."cust_id_id" 
+FROM "sales_order" 
+WHERE "sales_order"."id" IN (2001, 2004, 2006, 2007, 2008, 2648, 2650))
+
+res=Customer.objects.filter(id__in=list(d)).values('id','fname','lname')
+
+print(res, file=open('sixC.txt','a'))
+
+<QuerySet 
+[
+    {'id': 141, 'fname': 'Peter', 'lname': 'Pyper'}, 
+    {'id': 152, 'fname': 'Davey', 'lname': 'Jones'}, 
+    {'id': 154, 'fname': 'Marvin', 'lname': 'Smythe'}, 
+    {'id': 160, 'fname': 'Clara', 'lname': 'Nette'}, 
+    {'id': 194, 'fname': 'Jen-Chang', 'lname': 'Chin'}]>

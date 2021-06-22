@@ -1,0 +1,88 @@
+
+## Find Orders that been made in the last 60 days
+
+import datetime
+a=SalesOrder.objects.filter(order_date__lte=datetime.datetime.today()).filter(order_date__gt=datetime.datetime.today()-datetime.timedelta(days=60))
+
+<QuerySet []>
+
+SELECT "sales_order"."id", "sales_order"."cust_id_id", "sales_order"."order_date", "sales_order"."fin_code_id_id", "sales_order"."region", "sales_order"."sales_rep_id" 
+FROM "sales_order" 
+WHERE ("sales_order"."order_date" <= 2021-06-11 AND "sales_order"."order_date" > 2021-04-12)
+
+
+
+
+
+
+
+## Find Customers that ordered more than 3 products (quantity question)
+
+a=Customer.objects.annotate(num_of_products=Count('salesorder__salesorderitems__quantity'))
+                    .values('id','fname','lname','num_of_products')
+                    .filter(num_of_products__gt=0)
+                    .order_by('-num_of_products')
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", COUNT("sales_order_items"."quantity") AS "num_of_products" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+GROUP BY "customer"."id" 
+HAVING COUNT("sales_order_items"."quantity") > 0 
+ORDER BY "num_of_products" DESC
+
+print(a, file=open('myques.txt', 'a'))
+
+<QuerySet [
+    {'id': 101, 'fname': 'Michaels', 'lname': 'Devlin', 'num_of_products': 24}, 
+    {'id': 201, 'fname': 'Amit', 'lname': 'Singh', 'num_of_products': 22}, 
+    {'id': 104, 'fname': 'Meghan', 'lname': 'Mason', 'num_of_products': 20}, 
+    {'id': 209, 'fname': 'Laura', 'lname': 'Boyle', 'num_of_products': 19}, 
+    {'id': 204, 'fname': 'Robert', 'lname': 'Spaid', 'num_of_products': 18}, 
+    {'id': 200, 'fname': 'Helen', 'lname': 'Chau', 'num_of_products': 18}, 
+    {'id': 199, 'fname': 'Ella', 'lname': 'Mentary', 'num_of_products': 17}, 
+    {'id': 107, 'fname': 'Kelly', 'lname': 'Colburn', 'num_of_products': 17}, 
+    {'id': 103, 'fname': 'Erin', 'lname': 'Niedringhaus', 'num_of_products': 17}, 
+    {'id': 110, 'fname': 'Michael', 'lname': 'Agliori', 'num_of_products': 17}, 
+    {'id': 202, 'fname': 'Bubba', 'lname': 'Murphy', 'num_of_products': 17}, 
+    {'id': 166, 'fname': 'Malcolm', 'lname': 'Naddem', 'num_of_products': 16}, 
+    {'id': 206, 'fname': 'JohnPaul', 'lname': 'Jones', 'num_of_products': 16}, 
+    {'id': 121, 'fname': 'Pete', 'lname': 'Elkins', 'num_of_products': 16}, 
+    {'id': 129, 'fname': 'Heinz', 'lname': 'Fahrvergnugen', 'num_of_products': 15}, 
+    {'id': 205, 'fname': 'Elmo', 'lname': 'Smythe', 'num_of_products': 15}, 
+    {'id': 198, 'fname': 'Sheng', 'lname': 'Chen', 'num_of_products': 15}, 
+    {'id': 139, 'fname': 'Jai', 'lname': 'Dimitros', 'num_of_products': 15}, 
+    {'id': 116, 'fname': 'Brian', 'lname': 'Gugliuzza', 'num_of_products': 15}, 
+    {'id': 114, 'fname': 'Shane', 'lname': 'Chopp', 'num_of_products': 13}, 
+    '...(remaining elements truncated)...']>
+
+
+
+
+## Find Customers that ordered more than 3 products (quantity question) in the last two months
+
+
+#https://docs.python.org/3/library/datetime.html#timedelta-objects
+
+f=Q(order_date__lte=datetime.datetime.today()) 
+    & Q(order_date__gt=datetime.datetime.today()-datetime.timedelta(days=60))
+
+<Q: (
+    AND: ('order_date__lte', datetime.datetime(2021, 6, 12, 12, 22, 15, 675458)),
+         ('order_date__gt', datetime.datetime(2021, 4, 13, 12, 22, 15, 675511)))>
+
+
+
+
+b=Customer.objects.filter(salesorder__order_date__lte=datetime.datetime.today(),salesorder__order_date__gt=datetime.datetime.today()-datetime.timedelta(days=60)).annotate(num_of_products=Count('salesorder__salesorderitems__quantity')).filter(num_of_products__gt=3)
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", "customer"."address", "customer"."city", "customer"."state", "customer"."zip_code", "customer"."phone", "customer"."company_name", COUNT("sales_order_items"."quantity") AS "num_of_products" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+                LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+WHERE ("sales_order"."order_date" > 2021-04-13 AND "sales_order"."order_date" <= 2021-06-12) 
+GROUP BY "customer"."id" 
+HAVING COUNT("sales_order_items"."quantity") > 3
+
+
+SELECT "customer"."id", "customer"."fname", COUNT(DISTINCT "sales_order"."id") AS "c" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE "sales_order"."sales_rep_id" = 129 
+GROUP BY "customer"."id"
