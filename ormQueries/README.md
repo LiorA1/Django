@@ -8,7 +8,7 @@
 2. migrate all the tables, using: "*python manage.py migrate --run-syncdb*"
 3. load the data from the json file, using: "*python manage.py loaddata datadump.json*"
 4. open the shell (using:"*python manage.py shell*")
-5. import all the models ("*from store.models import \* *")
+5. import all the models ("*from store.models import \**")
 6. start query the database, to answer the following questions.
  
 ### Questions are:
