@@ -1,7 +1,7 @@
 
-a=SalesOrder.objects.filter(sales_rep=299).values('cust_id').distinct()
+a=SalesOrder.objects.filter(sales_rep=299).values('customer_id').distinct()
 
-b=SalesOrder.objects.exclude(sales_rep=299).values('cust_id').distinct()
+b=SalesOrder.objects.exclude(sales_rep=299).values('customer_id').distinct()
 
 d=a.difference(b)
 
@@ -19,3 +19,16 @@ EXCEPT
 (SELECT DISTINCT "sales_order"."cust_id_id" 
 FROM "sales_order" 
 WHERE NOT ("sales_order"."sales_rep_id" = 299))
+
+
+>>> a=Customer.objects.filter(salesorder__sales_rep="299").exclude(salesorder__sales_rep__gt=299).exclude(salesorder__sales_rep__lt=299)
+>>> print(a.query)
+SELECT "customer"."id", "customer"."fname", "customer"."lname", "customer"."address", "customer"."city", "customer"."state", "customer"."zip_code", "customer"."phone", "customer"."company_name" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+WHERE ("sales_order"."sales_rep_id" = 299 
+    AND NOT ("customer"."id" IN (SELECT U1."cust_id_id" 
+                                 FROM "sales_order" U1 
+                                 WHERE U1."sales_rep_id" > 299)) 
+    AND NOT ("customer"."id" IN (SELECT U1."cust_id_id" 
+                                 FROM "sales_order" U1 
+                                 WHERE U1."sales_rep_id" < 299)))

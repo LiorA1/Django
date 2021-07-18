@@ -1,0 +1,185 @@
+
+### 6.calculate the total purchases of each client
+
+a=Customer.objects.annotate(total_sum=Sum(F('salesorder__salesorderitems__quantity')*F('salesorder__salesorderitems__prod_id__unit_price'), output_field=FloatField())).values('id','fname','lname','total_sum').order_by('-total_sum')
+>>> print(a, file=open("mine.txt", 'a'))
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", 
+    SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total_sum" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+                LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+                LEFT OUTER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+GROUP BY "customer"."id" 
+ORDER BY "total_sum" DESC
+
+
+[{'id': 331, 'fname': 'Dominic', 'lname': 'Johansen', 'total_sum': None}, {'id': 552, 'fname': 'Janice', 'lname': 'OToole', 'total_sum': None}, 
+{'id': 332, 'fname': 'Stanley', 'lname': 'Jue', 'total_sum': None}, {'id': 551, 'fname': 'Tom', 'lname': 'Cruz', 'total_sum': None}, 
+{'id': 222, 'fname': 'Jane', 'lname': 'Doe', 'total_sum': None}, {'id': 330, 'fname': 'John', 'lname': 'Glenn', 'total_sum': None}, 
+{'id': 441, 'fname': 'Elizibeth', 'lname': 'Bordon', 'total_sum': None}, {'id': 440, 'fname': 'Marie', 'lname': 'Curie', 'total_sum': None}, 
+{'id': 661, 'fname': 'Jennifer', 'lname': 'Stutzman', 'total_sum': None}, {'id': 221, 'fname': 'Jack ', 'lname': 'Johnson', 'total_sum': None}, 
+{'id': 220, 'fname': 'Lewis N.', 'lname': 'Clark', 'total_sum': None}, {'id': 444, 'fname': 'Len', 'lname': 'Manager', 'total_sum': None}, 
+{'id': 665, 'fname': 'William', 'lname': 'Thompson', 'total_sum': None}, {'id': 333, 'fname': 'Harry', 'lname': 'Jones', 'total_sum': None}, 
+{'id': 555, 'fname': 'Philipe', 'lname': 'Fernandez', 'total_sum': None}, {'id': 553, 'fname': 'Stevie', 'lname': 'Nickolas', 'total_sum': None}, 
+{'id': 550, 'fname': 'Tony', 'lname': 'Antolini', 'total_sum': None}, {'id': 206, 'fname': 'JohnPaul', 'lname': 'Jones', 'total_sum': 8076.0}, 
+{'id': 201, 'fname': 'Amit', 'lname': 'Singh', 'total_sum': 8064.0}, {'id': 139, 'fname': 'Jai', 'lname': 'Dimitros', 'total_sum': 6888.0}, 
+{'id': 115, 'fname': 'Shannon', 'lname': 'Phillips', 'total_sum': 6804.0}, {'id': 121, 'fname': 'Pete', 'lname': 'Elkins', 'total_sum': 6780.0}, 
+{'id': 107, 'fname': 'Kelly', 'lname': 'Colburn', 'total_sum': 6744.0}, {'id': 110, 'fname': 'Michael', 'lname': 'Agliori', 'total_sum': 6720.0}, 
+{'id': 104, 'fname': 'Meghan', 'lname': 'Mason', 'total_sum': 6684.0}, {'id': 116, 'fname': 'Brian', 'lname': 'Gugliuzza', 'total_sum': 6660.0}, 
+{'id': 198, 'fname': 'Sheng', 'lname': 'Chen', 'total_sum': 6120.0}, {'id': 101, 'fname': 'Michaels', 'lname': 'Devlin', 'total_sum': 5808.0}, 
+{'id': 208, 'fname': 'Derek', 'lname': 'Suess', 'total_sum': 5784.0}, {'id': 109, 'fname': 'Jessie', 'lname': 'Gagliardo', 'total_sum': 5772.0}, 
+{'id': 182, 'fname': 'Leilani', 'lname': 'Gardner', 'total_sum': 5736.0}, {'id': 204, 'fname': 'Robert', 'lname': 'Spaid', 'total_sum': 5640.0}, 
+{'id': 202, 'fname': 'Bubba', 'lname': 'Murphy', 'total_sum': 5580.0}, {'id': 191, 'fname': 'Marta', 'lname': 'Richards', 'total_sum': 5472.0}, 
+{'id': 200, 'fname': 'Helen', 'lname': 'Chau', 'total_sum': 5412.0}, {'id': 114, 'fname': 'Shane', 'lname': 'Chopp', 'total_sum': 5388.0}, 
+{'id': 209, 'fname': 'Laura', 'lname': 'Boyle', 'total_sum': 5256.0}, {'id': 113, 'fname': 'Samuel', 'lname': 'Kaiser', 'total_sum': 5196.0}, 
+{'id': 122, 'fname': 'Al', 'lname': 'Dente', 'total_sum': 5052.0}, {'id': 175, 'fname': 'Tawfik', 'lname': 'Perkins', 'total_sum': 5016.0}, 
+{'id': 203, 'fname': 'Salton', 'lname': 'Pepper', 'total_sum': 4980.0}, {'id': 117, 'fname': 'Meredith', 'lname': 'Morgan', 'total_sum': 4932.0}, 
+{'id': 136, 'fname': 'Tommie', 'lname': 'Wooten', 'total_sum': 4896.0}, {'id': 205, 'fname': 'Elmo', 'lname': 'Smythe', 'total_sum': 4746.0}, 
+{'id': 124, 'fname': 'Fanny', 'lname': 'Farmer', 'total_sum': 4596.0}, {'id': 129, 'fname': 'Heinz', 'lname': 'Fahrvergnugen', 'total_sum': 4596.0}, {'id': 161, 'fname': 'Gene', 'lname': 'Poole', 'total_sum': 4584.0}, {'id': 128, 'fname': 'Hardy', 'lname': 'Mums', 'total_sum': 4428.0}, 
+{'id': 130, 'fname': 'Sal', 'lname': 'Monella', 'total_sum': 4416.0}, {'id': 189, 'fname': 'Herbert', 'lname': 'Berejiklian', 'total_sum': 4416.0}, 
+{'id': 176, 'fname': 'Helen', 'lname': 'Shumovich', 'total_sum': 4404.0}, {'id': 166, 'fname': 'Malcolm', 'lname': 'Naddem', 'total_sum': 4332.0}, 
+{'id': 137, 'fname': 'Polly', 'lname': 'Morfek', 'total_sum': 4176.0}, {'id': 118, 'fname': 'Kristina', 'lname': 'Sanford', 'total_sum': 4140.0}, 
+{'id': 199, 'fname': 'Ella', 'lname': 'Mentary', 'total_sum': 4056.0}, {'id': 183, 'fname': 'Marilyn', 'lname': 'Nakagama', 'total_sum': 4008.0}, 
+{'id': 103, 'fname': 'Erin', 'lname': 'Niedringhaus', 'total_sum': 3972.0}, {'id': 172, 'fname': 'Grace', 'lname': 'Perez', 'total_sum': 3912.0}, 
+{'id': 127, 'fname': 'Mary', 'lname': 'Lamm', 'total_sum': 3852.0}, {'id': 133, 'fname': 'Moe', 'lname': 'Bilhome', 'total_sum': 3828.0}, 
+{'id': 144, 'fname': 'Fangmei', 'lname': 'Wan', 'total_sum': 3792.0}, {'id': 184, 'fname': 'Anoush', 'lname': 'Serafina', 'total_sum': 3780.0}, 
+{'id': 119, 'fname': 'Tomm', 'lname': 'Smith', 'total_sum': 3744.0}, {'id': 102, 'fname': 'Beth', 'lname': 'Reiser', 'total_sum': 3624.0}, 
+{'id': 193, 'fname': 'Alfred', 'lname': 'Newman', 'total_sum': 3612.0}, {'id': 196, 'fname': 'Ling Ling', 'lname': 'Andrews', 'total_sum': 3564.0}, 
+{'id': 190, 'fname': 'Randy', 'lname': 'Arlington', 'total_sum': 3420.0}, {'id': 149, 'fname': 'Hans', 'lname': 'Uhnfitte', 'total_sum': 3348.0}, 
+{'id': 105, 'fname': 'Laura', 'lname': 'McCarthy', 'total_sum': 3216.0}, {'id': 207, 'fname': 'Wen-Chu', 'lname': 'Donchek', 'total_sum': 3192.0}, 
+{'id': 112, 'fname': 'Shawn', 'lname': 'McDonough', 'total_sum': 3156.0}, {'id': 123, 'fname': 'Amanda', 'lname': 'Lin', 'total_sum': 3144.0}, 
+{'id': 140, 'fname': 'Thomas', 'lname': 'Thumb', 'total_sum': 3132.0}, {'id': 111, 'fname': 'Dylan', 'lname': 'Ricci', 'total_sum': 3096.0}, 
+{'id': 134, 'fname': 'Paddy', 'lname': 'OFurniture', 'total_sum': 3072.0}, {'id': 132, 'fname': 'Marilyn', 'lname': 'King', 'total_sum': 3000.0}, 
+{'id': 155, 'fname': 'Milo', 'lname': 'Phipps', 'total_sum': 3000.0}, {'id': 125, 'fname': 'Sidney', 'lname': 'Smelledge', 'total_sum': 2940.0}, 
+{'id': 157, 'fname': 'William', 'lname': 'Watcom', 'total_sum': 2916.0}, {'id': 195, 'fname': 'Li-Hui', 'lname': 'Jyh-Hwa', 'total_sum': 2868.0}, 
+{'id': 143, 'fname': 'Peter', 'lname': 'Piper', 'total_sum': 2808.0}, {'id': 147, 'fname': 'Manoj', 'lname': 'Lela', 'total_sum': 2796.0}, 
+{'id': 159, 'fname': 'Rick', 'lname': 'Shaw', 'total_sum': 2748.0}, {'id': 174, 'fname': 'Anabai', 'lname': 'Zoblotny', 'total_sum': 2736.0}, 
+{'id': 135, 'fname': 'Belinda', 'lname': 'Clarke', 'total_sum': 2652.0}, {'id': 197, 'fname': 'Maio', 'lname': 'Chermak', 'total_sum': 2640.0}, 
+{'id': 164, 'fname': 'Aram', 'lname': 'Najarian', 'total_sum': 2580.0}, {'id': 108, 'fname': 'Matthew', 'lname': 'Goforth', 'total_sum': 2520.0}, 
+{'id': 151, 'fname': 'Balwinder', 'lname': 'Sinitskaya', 'total_sum': 2496.0}, {'id': 192, 'fname': 'Rosanna', 'lname': 'Beldov', 'total_sum': 2460.0}, {'id': 153, 'fname': 'Paul', 'lname': 'Jones', 'total_sum': 2448.0}, {'id': 188, 'fname': 'Vartan', 'lname': 'Berenberg', 'total_sum': 2424.0}, 
+{'id': 169, 'fname': 'Laura', 'lname': 'Terlemezian', 'total_sum': 2374.0}, {'id': 171, 'fname': 'Vincent', 'lname': 'Nahra', 'total_sum': 2364.0}, 
+{'id': 179, 'fname': 'Marsha', 'lname': 'Nguyen', 'total_sum': 2352.0}, {'id': 131, 'fname': 'Daljit', 'lname': 'Sinnot', 'total_sum': 2316.0}, 
+{'id': 148, 'fname': 'Beth', 'lname': 'Crooker', 'total_sum': 2280.0}, {'id': 181, 'fname': 'Emunah', 'lname': 'Teeven', 'total_sum': 2160.0}, 
+{'id': 168, 'fname': 'Almen', 'lname': 'de Joie', 'total_sum': 2124.0}, {'id': 170, 'fname': 'Manh', 'lname': 'Neubauer', 'total_sum': 2076.0}, 
+{'id': 178, 'fname': 'Suresh', 'lname': 'Naidu', 'total_sum': 2028.0}, {'id': 186, 'fname': 'Thao', 'lname': 'Tenorio', 'total_sum': 2016.0}, 
+{'id': 146, 'fname': 'Alberto', 'lname': 'Yost', 'total_sum': 1980.0}, {'id': 150, 'fname': 'Carl', 'lname': 'Mason', 'total_sum': 1980.0}, 
+{'id': 142, 'fname': 'Alfredo', 'lname': 'Margolis', 'total_sum': 1956.0}, {'id': 194, 'fname': 'Jen-Chang', 'lname': 'Chin', 'total_sum': 1896.0}, 
+{'id': 162, 'fname': 'Melba', 'lname': 'Toste', 'total_sum': 1884.0}, {'id': 156, 'fname': 'Sue', 'lname': 'DuCode', 'total_sum': 1836.0}, 
+{'id': 173, 'fname': 'Grover', 'lname': 'Pendelton', 'total_sum': 1752.0}, {'id': 177, 'fname': 'Joseph', 'lname': 'Zubenko', 'total_sum': 1752.0}, 
+{'id': 158, 'fname': 'Jack', 'lname': 'Cass', 'total_sum': 1704.0}, {'id': 138, 'fname': 'Regus', 'lname': 'Patoff', 'total_sum': 1692.0}, 
+{'id': 185, 'fname': 'Serop', 'lname': 'Belmont', 'total_sum': 1656.0}, {'id': 106, 'fname': 'Paul', 'lname': 'Phillips', 'total_sum': 1596.0}, 
+{'id': 165, 'fname': 'Tamara', 'lname': 'Mournen', 'total_sum': 1584.0}, {'id': 126, 'fname': 'Sam', 'lname': 'Ovar', 'total_sum': 1560.0}, 
+{'id': 152, 'fname': 'Davey', 'lname': 'Jones', 'total_sum': 1536.0}, {'id': 163, 'fname': 'R.I.', 'lname': 'Peese', 'total_sum': 1452.0}, 
+{'id': 160, 'fname': 'Clara', 'lname': 'Nette', 'total_sum': 1368.0}, {'id': 187, 'fname': 'Sebouh', 'lname': 'Bensoul', 'total_sum': 1332.0}, 
+{'id': 120, 'fname': 'Gertrude', 'lname': 'Stein', 'total_sum': 1320.0}, {'id': 167, 'fname': 'Nicklas', 'lname': 'Cara', 'total_sum': 1248.0}, 
+{'id': 180, 'fname': 'Edith', 'lname': 'Peros', 'total_sum': 1248.0}, {'id': 145, 'fname': 'John', 'lname': 'Doe', 'total_sum': 1224.0}, 
+{'id': 154, 'fname': 'Marvin', 'lname': 'Smythe', 'total_sum': 1128.0}, {'id': 141, 'fname': 'Peter', 'lname': 'Pyper', 'total_sum': 648.0}]
+
+
+
+### 7.Classify Customers by purchases total (if more than 4000 - "prefered client")
+
+c=Customer.objects.annotate( \
+    total_sum=Sum(F('salesorder__salesorderitems__quantity')*F('salesorder__salesorderitems__product__unit_price'), output_field=FloatField())) \
+    .values('id','fname','lname','total_sum').order_by('-total_sum') \
+    .annotate(level=Case(When(Q(total_sum__gt=4000) ,then=Value("prefered client")), \
+                          When(Q(total_sum__lte=4000), then=Value("regular client")), \
+                          default=Value("None"), output_field=CharField()))
+
+
+
+
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", 
+        SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total_sum", 
+        CASE WHEN SUM(("sales_order_items"."quantity" * "product"."unit_price")) > 4000.0 THEN good 
+             WHEN SUM(("sales_order_items"."quantity" * "product"."unit_price")) <= 4000.0 THEN bad 
+             ELSE None END AS "level" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+                LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+                LEFT OUTER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+GROUP BY "customer"."id" 
+ORDER BY "total_sum" DESC
+
+
+<QuerySet [
+    {'id': 441, 'fname': 'Elizibeth', 'lname': 'Bordon', 'total_sum': None, 'level': 'None'}, 
+    {'id': 331, 'fname': 'Dominic', 'lname': 'Johansen', 'total_sum': None, 'level': 'None'}, 
+    {'id': 440, 'fname': 'Marie', 'lname': 'Curie', 'total_sum': None, 'level': 'None'}, 
+    {'id': 661, 'fname': 'Jennifer', 'lname': 'Stutzman', 'total_sum': None, 'level': 'None'}, 
+    {'id': 665, 'fname': 'William', 'lname': 'Thompson', 'total_sum': None, 'level': 'None'}, 
+    {'id': 221, 'fname': 'Jack ', 'lname': 'Johnson', 'total_sum': None, 'level': 'None'}, 
+    {'id': 222, 'fname': 'Jane', 'lname': 'Doe', 'total_sum': None, 'level': 'None'}, 
+    {'id': 332, 'fname': 'Stanley', 'lname': 'Jue', 'total_sum': None, 'level': 'None'}, 
+    {'id': 444, 'fname': 'Len', 'lname': 'Manager', 'total_sum': None, 'level': 'None'}, 
+    {'id': 333, 'fname': 'Harry', 'lname': 'Jones', 'total_sum': None, 'level': 'None'}, 
+    {'id': 550, 'fname': 'Tony', 'lname': 'Antolini', 'total_sum': None, 'level': 'None'}, 
+    {'id': 330, 'fname': 'John', 'lname': 'Glenn', 'total_sum': None, 'level': 'None'}, 
+    {'id': 551, 'fname': 'Tom', 'lname': 'Cruz', 'total_sum': None, 'level': 'None'}, 
+    {'id': 555, 'fname': 'Philipe', 'lname': 'Fernandez', 'total_sum': None, 'level': 'None'}, 
+    {'id': 552, 'fname': 'Janice', 'lname': 'OToole', 'total_sum': None, 'level': 'None'}, 
+    {'id': 220, 'fname': 'Lewis N.', 'lname': 'Clark', 'total_sum': None, 'level': 'None'}, 
+    {'id': 553, 'fname': 'Stevie', 'lname': 'Nickolas', 'total_sum': None, 'level': 'None'}, 
+    {'id': 206, 'fname': 'JohnPaul', 'lname': 'Jones', 'total_sum': 8076.0, 'level': 'prefered client'}, 
+    {'id': 201, 'fname': 'Amit', 'lname': 'Singh', 'total_sum': 8064.0, 'level': 'prefered client'}, 
+    {'id': 139, 'fname': 'Jai', 'lname': 'Dimitros', 'total_sum': 6888.0, 'level': 'prefered client'}, '...(remaining elements truncated)...']>
+
+
+### 8.Classify Customers by purchases total (if more than average - "prefered client")
+
+customers = Customer.objects.filter(id=OuterRef('pk'))
+
+customers_total = customers.annotate(total_sum=Sum(F('salesorder__salesorderitems__quantity')*F('salesorder__salesorderitems__product__unit_price'), output_field=FloatField())).values('total_sum')
+
+c=Customer.objects.annotate(\
+    total_sum=Sum(F('salesorder__salesorderitems__quantity')*F('salesorder__salesorderitems__product__unit_price'), output_field=FloatField()))\
+    .values('id','fname','lname','total_sum').order_by('-total_sum')\
+    .annotate(level=Case(When(Q(total_sum__gt=Avg(Subquery(customers_total))) ,then=Value("prefered client")),\
+                          When(Q(total_sum__lte=Avg(Subquery(customers_total))), then=Value("regular client")),\
+                          default=Value("None"), output_field=CharField()))
+
+
+
+
+
+
+SELECT "customer"."id", "customer"."fname", "customer"."lname", 
+    SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total_sum", 
+    CASE WHEN SUM(("sales_order_items"."quantity" * "product"."unit_price")) > AVG((SELECT SUM((U2."quantity" * U3."unit_price")) AS "total_sum" 
+                                                                                    FROM "customer" U0 LEFT OUTER JOIN "sales_order" U1 ON (U0."id" = U1."cust_id_id") 
+                                                                                                        LEFT OUTER JOIN "sales_order_items" U2 ON (U1."id" = U2."sale_order_id_id") 
+                                                                                                        LEFT OUTER JOIN "product" U3 ON (U2."prod_id_id" = U3."id") 
+                                                                                    WHERE U0."id" = "customer"."id" GROUP BY U0."id")) THEN prefered client 
+        WHEN SUM(("sales_order_items"."quantity" * "product"."unit_price")) <= AVG((SELECT SUM((U2."quantity" * U3."unit_price")) AS "total_sum" 
+                                                                                    FROM "customer" U0 LEFT OUTER JOIN "sales_order" U1 ON (U0."id" = U1."cust_id_id") 
+                                                                                                        LEFT OUTER JOIN "sales_order_items" U2 ON (U1."id" = U2."sale_order_id_id") 
+                                                                                                        LEFT OUTER JOIN "product" U3 ON (U2."prod_id_id" = U3."id") 
+                                                                                    WHERE U0."id" = "customer"."id" GROUP BY U0."id")) THEN regular client 
+        ELSE None END AS "level" 
+FROM "customer" LEFT OUTER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
+                LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
+                LEFT OUTER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+GROUP BY "customer"."id" 
+ORDER BY "total_sum" DESC
+
+<QuerySet [
+    {'id': 441, 'fname': 'Elizibeth', 'lname': 'Bordon', 'total_sum': None, 'level': 'None'}, 
+    {'id': 331, 'fname': 'Dominic', 'lname': 'Johansen', 'total_sum': None, 'level': 'None'}, 
+    {'id': 440, 'fname': 'Marie', 'lname': 'Curie', 'total_sum': None, 'level': 'None'}, 
+    {'id': 661, 'fname': 'Jennifer', 'lname': 'Stutzman', 'total_sum': None, 'level': 'None'}, 
+    {'id': 665, 'fname': 'William', 'lname': 'Thompson', 'total_sum': None, 'level': 'None'}, 
+    {'id': 221, 'fname': 'Jack ', 'lname': 'Johnson', 'total_sum': None, 'level': 'None'}, 
+    {'id': 222, 'fname': 'Jane', 'lname': 'Doe', 'total_sum': None, 'level': 'None'}, 
+    {'id': 332, 'fname': 'Stanley', 'lname': 'Jue', 'total_sum': None, 'level': 'None'}, 
+    {'id': 444, 'fname': 'Len', 'lname': 'Manager', 'total_sum': None, 'level': 'None'}, 
+    {'id': 333, 'fname': 'Harry', 'lname': 'Jones', 'total_sum': None, 'level': 'None'}, 
+    {'id': 550, 'fname': 'Tony', 'lname': 'Antolini', 'total_sum': None, 'level': 'None'}, 
+    {'id': 330, 'fname': 'John', 'lname': 'Glenn', 'total_sum': None, 'level': 'None'}, 
+    {'id': 551, 'fname': 'Tom', 'lname': 'Cruz', 'total_sum': None, 'level': 'None'}, 
+    {'id': 555, 'fname': 'Philipe', 'lname': 'Fernandez', 'total_sum': None, 'level': 'None'}, 
+    {'id': 552, 'fname': 'Janice', 'lname': 'OToole', 'total_sum': None, 'level': 'None'}, 
+    {'id': 220, 'fname': 'Lewis N.', 'lname': 'Clark', 'total_sum': None, 'level': 'None'}, 
+    {'id': 553, 'fname': 'Stevie', 'lname': 'Nickolas', 'total_sum': None, 'level': 'None'}, 
+    {'id': 206, 'fname': 'JohnPaul', 'lname': 'Jones', 'total_sum': 8076.0, 'level': 'regular client'}, 
+    {'id': 201, 'fname': 'Amit', 'lname': 'Singh', 'total_sum': 8064.0, 'level': 'regular client'}, 
+    {'id': 139, 'fname': 'Jai', 'lname': 'Dimitros', 'total_sum': 6888.0, 'level': 'regular client'}, '...(remaining elements truncated)...']>

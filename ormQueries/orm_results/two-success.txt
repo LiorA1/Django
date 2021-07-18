@@ -1,8 +1,8 @@
 
-# two = Customer.objects.filter(address__icontains='x') .values('fname', 'lname')
-# print(two, file=open('two.txt', 'a'))
+two = Customer.objects.filter(address__icontains='x') .values('fname', 'lname')
+# print(two, file=open('orm_results/two-success.txt', 'a'))
 
-<QuerySet [<Customer: Customer object (133)>, <Customer: Customer object (198)>, <Customer: Customer object (220)>, <Customer: Customer object (221)>]>
+
 <QuerySet [
 {'fname': 'Moe', 'lname': 'Bilhome'},
  {'fname': 'Sheng', 'lname': 'Chen'},

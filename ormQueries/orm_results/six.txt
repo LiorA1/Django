@@ -1,10 +1,10 @@
 
-a=Customer.objects.filter(salesorder__salesorderitems__prod_id__name__icontains='shirt').values_list('id',flat=True)
+a=Customer.objects.filter(salesorder__salesorderitems__product__name__icontains='shirt').values_list('id',flat=True)
 
 SELECT "customer"."id" 
-FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
-                INNER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
-                INNER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."customer_id") 
+                INNER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id") 
+                INNER JOIN "product" ON ("sales_order_items"."product_id" = "product"."id") 
 WHERE UPPER("product"."name"::text) LIKE UPPER(%shirt%)
 
 
@@ -31,3 +31,16 @@ print(c, file=open('six.txt','a'))
     {'id': 154, 'fname': 'Marvin', 'lname': 'Smythe'}, 
     {'id': 160, 'fname': 'Clara', 'lname': 'Nette'}, 
     {'id': 194, 'fname': 'Jen-Chang', 'lname': 'Chin'}]>
+
+
+
+Customer.objects.filter(salesorder__isnull=False).distinct().exclude(salesorder__salesorderitems__product__name__icontains="shirt")
+
+
+SELECT DISTINCT "customer"."id", "customer"."fname", "customer"."lname", "customer"."address", "customer"."city", "customer"."state", "customer"."zip_code", "customer"."phone", "customer"."company_name" 
+FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."customer_id") 
+WHERE ("sales_order"."id" IS NOT NULL 
+    AND NOT ("customer"."id" IN (SELECT U1."customer_id" 
+                                 FROM "sales_order" U1 INNER JOIN "sales_order_items" U2 ON (U1."id" = U2."sale_order_id") 
+                                                       INNER JOIN "product" U3 ON (U2."product_id" = U3."id") 
+                                                       WHERE UPPER(U3."name"::text) LIKE UPPER(%shirt%))))

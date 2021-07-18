@@ -18,9 +18,9 @@ WHERE ("sales_order"."order_date" <= 2021-06-11 AND "sales_order"."order_date" >
 
 ## Find Customers that ordered more than 3 products (quantity question)
 
-a=Customer.objects.annotate(num_of_products=Count('salesorder__salesorderitems__quantity'))
-                    .values('id','fname','lname','num_of_products')
-                    .filter(num_of_products__gt=0)
+a=Customer.objects.annotate(num_of_products=Count('salesorder__salesorderitems__quantity')) \
+                    .values('id','fname','lname','num_of_products') \
+                    .filter(num_of_products__gt=0) \
                     .order_by('-num_of_products')
 
 SELECT "customer"."id", "customer"."fname", "customer"."lname", COUNT("sales_order_items"."quantity") AS "num_of_products" 
@@ -72,7 +72,9 @@ f=Q(order_date__lte=datetime.datetime.today())
 
 
 
-b=Customer.objects.filter(salesorder__order_date__lte=datetime.datetime.today(),salesorder__order_date__gt=datetime.datetime.today()-datetime.timedelta(days=60)).annotate(num_of_products=Count('salesorder__salesorderitems__quantity')).filter(num_of_products__gt=3)
+b=Customer.objects
+    .filter(salesorder__order_date__lte=datetime.datetime.today(), salesorder__order_date__gt=datetime.datetime.today()-datetime.timedelta(days=60))
+    .annotate(num_of_products=Count('salesorder__salesorderitems__quantity')).filter(num_of_products__gt=3)
 
 SELECT "customer"."id", "customer"."fname", "customer"."lname", "customer"."address", "customer"."city", "customer"."state", "customer"."zip_code", "customer"."phone", "customer"."company_name", COUNT("sales_order_items"."quantity") AS "num_of_products" 
 FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
@@ -80,9 +82,3 @@ FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cu
 WHERE ("sales_order"."order_date" > 2021-04-13 AND "sales_order"."order_date" <= 2021-06-12) 
 GROUP BY "customer"."id" 
 HAVING COUNT("sales_order_items"."quantity") > 3
-
-
-SELECT "customer"."id", "customer"."fname", COUNT(DISTINCT "sales_order"."id") AS "c" 
-FROM "customer" INNER JOIN "sales_order" ON ("customer"."id" = "sales_order"."cust_id_id") 
-WHERE "sales_order"."sales_rep_id" = 129 
-GROUP BY "customer"."id"

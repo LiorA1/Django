@@ -1,12 +1,14 @@
 
-# four = Product.objects.filter(salesorderitems__sale_order_id__cust_id__fname__startswith='L').values('name','description').order_by('name')
+# four = Product.objects.filter(salesorderitems__sale_order__customer__fname__startswith='L').values('name','description').order_by('name')
+
 
 SELECT "product"."name", "product"."description" 
-FROM "product" INNER JOIN "sales_order_items" ON ("product"."id" = "sales_order_items"."prod_id_id") 
-    INNER JOIN "sales_order" ON ("sales_order_items"."sale_order_id_id" = "sales_order"."id") 
-    INNER JOIN "customer" ON ("sales_order"."cust_id_id" = "customer"."id") 
+FROM "product" INNER JOIN "sales_order_items" ON ("product"."id" = "sales_order_items"."product_id") 
+    INNER JOIN "sales_order" ON ("sales_order_items"."sale_order_id" = "sales_order"."id") 
+    INNER JOIN "customer" ON ("sales_order"."customer_id" = "customer"."id") 
 WHERE "customer"."fname"::text LIKE L% 
 ORDER BY "product"."name" ASC
+
 
 
 # four = list()

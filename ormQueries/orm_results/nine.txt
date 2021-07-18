@@ -30,3 +30,27 @@ ORDER BY "employee"."emp_id" ASC
     {'emp_id': 949, 'emp_fname': 'Pamela', 'emp_lname': 'Savarino', 'num_of_orders': 53}, 
     {'emp_id': 1142, 'emp_fname': 'Alison', 'emp_lname': 'Clark', 'num_of_orders': 57}, 
     {'emp_id': 1596, 'emp_fname': 'Catherine', 'emp_lname': 'Pickett', 'num_of_orders': 53}]
+
+
+a=Employee.objects.annotate(num_of_orders=Count("salesorder")).values("emp_id","emp_fname","emp_lname","num_of_orders").filter(num_of_orders__gt=0).order_by("emp_id")
+
+
+SELECT "employee"."emp_id", "employee"."emp_fname", "employee"."emp_lname", COUNT("sales_order"."id") AS "num_of_orders" 
+FROM "employee" LEFT OUTER JOIN "sales_order" ON ("employee"."emp_id" = "sales_order"."sales_rep_id") 
+GROUP BY "employee"."emp_id" 
+HAVING COUNT("sales_order"."id") > 0 
+ORDER BY "employee"."emp_id" ASC
+
+
+<QuerySet [
+    {'emp_id': 129, 'emp_fname': 'Philip', 'emp_lname': 'Chin', 'num_of_orders': 57}, 
+    {'emp_id': 195, 'emp_fname': 'Marc', 'emp_lname': 'Dill', 'num_of_orders': 50}, 
+    {'emp_id': 299, 'emp_fname': 'Rollin', 'emp_lname': 'Overbey', 'num_of_orders': 115}, 
+    {'emp_id': 467, 'emp_fname': 'James', 'emp_lname': 'Klobucher', 'num_of_orders': 56}, 
+    {'emp_id': 667, 'emp_fname': 'Mary', 'emp_lname': 'Garcia', 'num_of_orders': 53}, 
+    {'emp_id': 690, 'emp_fname': 'Kathleen', 'emp_lname': 'Poitras', 'num_of_orders': 52}, 
+    {'emp_id': 856, 'emp_fname': 'Samuel', 'emp_lname': 'Singer', 'num_of_orders': 55}, 
+    {'emp_id': 902, 'emp_fname': 'Moira', 'emp_lname': 'Kelly', 'num_of_orders': 47}, 
+    {'emp_id': 949, 'emp_fname': 'Pamela', 'emp_lname': 'Savarino', 'num_of_orders': 53}, 
+    {'emp_id': 1142, 'emp_fname': 'Alison', 'emp_lname': 'Clark', 'num_of_orders': 57}, 
+    {'emp_id': 1596, 'emp_fname': 'Catherine', 'emp_lname': 'Pickett', 'num_of_orders': 53}]>

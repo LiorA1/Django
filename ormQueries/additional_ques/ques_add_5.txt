@@ -1,0 +1,129 @@
+
+### Find how many products was sold
+
+a= SalesOrderItems.objects.values('product_id', 'quantity').annotate(total=Sum('quantity')).values('product_id', 'total')
+
+SELECT "sales_order_items"."product_id", SUM("sales_order_items"."quantity") AS "total" 
+FROM "sales_order_items" 
+GROUP BY "sales_order_items"."product_id", "sales_order_items"."quantity"
+
+<QuerySet [
+    {'product_id': 401, 'total': 384}, 
+    {'product_id': 600, 'total': 984}, 
+    {'product_id': 302, 'total': 516}, 
+    {'product_id': 300, 'total': 60}, 
+    {'product_id': 600, 'total': 216}, 
+    {'product_id': 500, 'total': 144}, 
+    {'product_id': 401, 'total': 1056}, {'product_id': 600, 'total': 528}, {'product_id': 301, 'total': 120}, {'product_id': 501, 'total': 888}, {'product_id': 401, 'total': 60}, {'product_id': 601, 'total': 984}, {'product_id': 302, 'total': 120}, {'product_id': 400, 'total': 1152}, {'product_id': 400, 'total': 240}, {'product_id': 500, 'total': 1044}, {'product_id': 300, 'total': 648}, {'product_id': 600, 'total': 300}, {'product_id': 401, 'total': 25}, {'product_id': 300, 'total': 744}, '...(remaining elements truncated)...']>
+
+
+
+
+### 
+
+a = SalesOrderItems.objects.values('product_id', 'quantity')
+                            .annotate(total=Sum('quantity'))
+                            .values('product_id', 'total')
+                            .annotate(level=Case(When(Q(total__gt=1000), then=Value(B)),default=Value(A),output_field=IntegerField()))
+
+SELECT "sales_order_items"."product_id", 
+        SUM("sales_order_items"."quantity") AS "total", 
+        CASE WHEN SUM("sales_order_items"."quantity") > 1000 THEN 1000 ELSE 0 END AS "level" 
+FROM "sales_order_items" 
+GROUP BY "sales_order_items"."product_id"
+
+
+<QuerySet [
+    {'product_id': 600, 'total': 3060, 'level': 1000}, 
+    {'product_id': 400, 'total': 3278, 'level': 1000}, 
+    {'product_id': 301, 'total': 2388, 'level': 1000}, 
+    {'product_id': 300, 'total': 2364, 'level': 1000}, 
+    {'product_id': 401, 'total': 2701, 'level': 1000}, 
+    {'product_id': 302, 'total': 2148, 'level': 1000}, 
+    {'product_id': 601, 'total': 2724, 'level': 1000}, 
+    {'product_id': 700, 'total': 4536, 'level': 1000}, 
+    {'product_id': 501, 'total': 2508, 'level': 1000}, 
+    {'product_id': 500, 'total': 2652, 'level': 1000}]>
+
+
+
+
+a= SalesOrderItems.objects.values('prod_id_id', 'quantity')
+                            .annotate(total=Sum('quantity'),
+                                level=Case(When(Q(total__gt=1000), then=Value(B)),default=Value(A),output_field=IntegerField()))
+                            .values('prod_id_id','total', 'level')
+
+
+SELECT "sales_order_items"."prod_id_id", 
+        SUM("sales_order_items"."quantity") AS "total", 
+        CASE WHEN SUM("sales_order_items"."quantity") > 1000 THEN 1000 ELSE 0 END AS "level" 
+FROM "sales_order_items" 
+GROUP BY "sales_order_items"."prod_id_id", "sales_order_items"."quantity"
+
+
+<QuerySet [
+    {'prod_id_id': 401, 'total': 384, 'level': 0}, 
+    {'prod_id_id': 600, 'total': 984, 'level': 0}, 
+    {'prod_id_id': 302, 'total': 516, 'level': 0}, 
+    {'prod_id_id': 300, 'total': 60, 'level': 0}, 
+    {'prod_id_id': 600, 'total': 216, 'level': 0}, 
+    {'prod_id_id': 500, 'total': 144, 'level': 0}, 
+    {'prod_id_id': 401, 'total': 1056, 'level': 1000}, 
+    {'prod_id_id': 600, 'total': 528, 'level': 0}, 
+    {'prod_id_id': 301, 'total': 120, 'level': 0}, 
+    {'prod_id_id': 501, 'total': 888, 'level': 0}, 
+    {'prod_id_id': 401, 'total': 60, 'level': 0}, 
+    {'prod_id_id': 601, 'total': 984, 'level': 0}, 
+    {'prod_id_id': 302, 'total': 120, 'level': 0}, {'prod_id_id': 400, 'total': 1152, 'level': 1000}, {'prod_id_id': 400, 'total': 240, 'level': 0}, {'prod_id_id': 500, 'total': 1044, 'level': 1000}, {'prod_id_id': 300, 'total': 648, 'level': 0}, {'prod_id_id': 600, 'total': 300, 'level': 0}, {'prod_id_id': 401, 'total': 25, 'level': 0}, {'prod_id_id': 300, 'total': 744, 'level': 0}, '...(remaining elements truncated)...']>
+
+#! not correct ^
+# What happens here behind the scenes ?
+
+
+
+# Correct - \/
+
+b=Product.objects.annotate(total=Sum('salesorderitems__quantity')).values('id', 'name', 'total')
+
+SELECT "product"."id", "product"."name", SUM("sales_order_items"."quantity") AS "total" 
+FROM "product" LEFT OUTER JOIN "sales_order_items" ON ("product"."id" = "sales_order_items"."prod_id_id") 
+GROUP BY "product"."id"
+
+<QuerySet [
+    {'id': 300, 'name': 'Tee Shirt', 'total': 2364}, 
+    {'id': 301, 'name': 'Tee Shirt', 'total': 2388}, 
+    {'id': 302, 'name': 'Tee Shirt', 'total': 2148}, 
+    {'id': 400, 'name': 'Baseball Cap', 'total': 3278}, 
+    {'id': 401, 'name': 'Baseball Cap', 'total': 2701}, 
+    {'id': 500, 'name': 'Visor', 'total': 2652}, 
+    {'id': 501, 'name': 'Visor', 'total': 2508}, 
+    {'id': 600, 'name': 'Sweatshirt', 'total': 3060}, 
+    {'id': 601, 'name': 'Sweatshirt', 'total': 2724}, 
+    {'id': 700, 'name': 'Shorts', 'total': 4536}]>
+    
+
+Product.objects.values('id','name','quantity')
+<QuerySet [
+    {'id': 300, 'name': 'Tee Shirt', 'quantity': 28}, 
+    {'id': 301, 'name': 'Tee Shirt', 'quantity': 54}, 
+    {'id': 302, 'name': 'Tee Shirt', 'quantity': 75}, 
+    {'id': 400, 'name': 'Baseball Cap', 'quantity': 112}, 
+    {'id': 401, 'name': 'Baseball Cap', 'quantity': 12}, 
+    {'id': 500, 'name': 'Visor', 'quantity': 36}, 
+    {'id': 501, 'name': 'Visor', 'quantity': 28}, 
+    {'id': 600, 'name': 'Sweatshirt', 'quantity': 39}, 
+    {'id': 601, 'name': 'Sweatshirt', 'quantity': 32}, 
+    {'id': 700, 'name': 'Shorts', 'quantity': 80}]>
+
+
+
+
+
+
+
+#### Find for each customer the products that he ordered
+
+
+
+Customer.objects.all().values('id', 'salesorder__salesorderitems__prod_id__id', 'salesorder__salesorderitems__prod_id__name')
+

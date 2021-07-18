@@ -1,10 +1,10 @@
 
-
+## Additional Questions 3:
 ## Find the total of each order
 
-t=SalesOrder.objects.annotate(total=
-            Sum(
-                F('salesorderitems__quantity')*F('salesorderitems__prod_id__unit_price'),
+t=SalesOrder.objects.annotate(total= \
+            Sum( \
+                F('salesorderitems__quantity')*F('salesorderitems__product__unit_price'), \
                  output_field=FloatField()))
 
 t=t.values('id', 'cust_id','order_date', 'total')
@@ -32,14 +32,19 @@ print(t.query, file=open('ques13.txt', 'a'))
 
 
 
-SELECT "sales_order"."id", "sales_order"."cust_id_id", "sales_order"."order_date", SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total" 
-FROM "sales_order" LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id_id") 
-                LEFT OUTER JOIN "product" ON ("sales_order_items"."prod_id_id" = "product"."id") 
+SELECT "sales_order"."id", "sales_order"."customer_id", "sales_order"."order_date", SUM(("sales_order_items"."quantity" * "product"."unit_price")) AS "total" 
+FROM "sales_order" LEFT OUTER JOIN "sales_order_items" ON ("sales_order"."id" = "sales_order_items"."sale_order_id") 
+                    LEFT OUTER JOIN "product" ON ("sales_order_items"."product_id" = "product"."id") 
 GROUP BY "sales_order"."id"
 
 
+
 ## The same query with order_by 'cust_id'
-t=SalesOrder.objects.annotate(total=Sum(F('salesorderitems__quantity')*F('salesorderitems__prod_id__unit_price'), output_field=FloatField())).values('id','cust_id','order_date','total').order_by('cust_id')
+t=SalesOrder.objects
+    .annotate(total=Sum(F('salesorderitems__quantity')*F('salesorderitems__product__unit_price'), output_field=FloatField()))
+    .values('id','customer_id','order_date','total').order_by('customer_id')
+
+
 <QuerySet [
     {'id': 2583, 'cust_id': 101, 'order_date': datetime.date(1994, 4, 5), 'total': 1152.0}, 
     {'id': 2206, 'cust_id': 101, 'order_date': datetime.date(1993, 4, 16), 'total': 624.0}, 
